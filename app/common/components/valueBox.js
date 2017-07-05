@@ -9,7 +9,7 @@ angular.module('primeiraApp').component('valueBox', {
   controller: [
     'gridSystem',
     function(gridSystem) {
-      this.gridClasses = gridSystem.toCssClasses(this.grid)
+      this.$onInit = () => this.gridClasses = gridSystem.toCssClasses(this.grid)
     }
   ],
   template: `
@@ -20,7 +20,7 @@ angular.module('primeiraApp').component('valueBox', {
         <p>{{ $ctrl.text }}</p>
       </div>
       <div class="icon">
-        <i class="fa {{ $ctrl.iconClass }}"></i>
+        <i class="{{ $ctrl.iconClass }}"></i>
       </div>
     </div>
   </div>
