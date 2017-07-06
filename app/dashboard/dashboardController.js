@@ -31,12 +31,12 @@
     vm.getSummary = function() {
       const url = 'http://localhost:3003/api/billingSummary'
       $http.get(url).success(function({ credit = 0, debt = 0 }) {
-        $scope.credit = credit
-        $scope.debt = debt
-        $scope.total = credit - debt
+        vm.credit = credit
+        vm.debt = debt
+        vm.total = credit - debt
       })
     }
 
-    $scope.getSummary()
+    vm.getSummary()
   }
 })()
