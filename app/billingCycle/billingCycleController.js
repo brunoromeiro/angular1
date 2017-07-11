@@ -2,21 +2,70 @@
   angular.module('primeiraApp').controller('BillingCycleCtrl', [
     '$http',
     'msgs',
+    'tabs',
     BillingCycleController
   ])
 
-  function BillingCycleController($http, msgs){
+  function BillingCycleController($http, msgs, tabs){
 
     const vm = this
+    const url = 'http://localhost:3003/api/billingCycles'
+
+    vm.refresh = function(){
+        $http.get(url).then(function(response){
+          vm.billingCycle = {}
+          vm.billingCycles = response.data
+          tabs.show(vm, {tabList:true, tabCreate: true})
+        })
+
+    }
 
     vm.create = function() {
-      const url = 'http://localhost:3003/api/billingCycles'
-      $http.post(url, vm.billingCycle).then(function(response) {
-        vm.billingCycle = {}
-        msgs.addSuccess('Operação realizada com Sucesso!')//console.log('Sucesso!')
-      }).error(function(data) {
+
+      $http.post(url, vm.billingCycle)
+        .then(function(response) {
+            vm.refresh()
+            msgs.addSuccess('Operação realizada com Sucesso!')
+            console.log('Sucesso!')
+        })
+        .catch(function(data) {
+            msgs.addError(response.data.errors)
+            console.log(response.data.erros)
+        })
+    }
+    vm.showTabUpdate = function(billingCycle) {
+      vm.billingCycle = billingCycle
+      tabs.show(vm, { tabUpdate: true })
+    }
+
+    vm.showTabDelete = function(billingCycle) {
+      vm.billingCycle = billingCycle
+      tabs.show(vm, {tabDelete: true })
+    }
+    vm.update = function() {
+      const updateUrl = `${url}/${vm.billingCycle._id}`
+      $http.put(updateUrl,vm.billingCycle).then(function(response){
+        vm.refresh()
+        msgs.addSuccess('Operação realizada com sucesso!')
+        console.log("Sucesso!")
+      }).error(function(data){ //HERE
         msgs.addError(response.data.errors)
+        console.log(response.data.errors)
       })
     }
+    vm.delete = function() {
+      const deleteUrl = `${url}/${vm.billingCycle._id}`
+      $http.delete(deleteUrl,vm.billingCycle).then(function(response){
+        vm.refresh()
+        msgs.addSuccess('Operação realizada com sucesso!')
+        console.log("Sucesso!")
+      }).catch(function(data){
+        msgs.addError(response.data.errors)
+        console.log(response.data.error)
+      })
+
+    }
+
+    vm.refresh()
   }
 })()
