@@ -37,7 +37,7 @@
             msgs.addSuccess('Operação realizada com Sucesso!')
             console.log('Sucesso!')
         })
-        .catch(function(data) {
+        .catch(function(response) {
             msgs.addError(response.data.errors)
             console.log(response.data.erros)
         })
@@ -59,7 +59,7 @@
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
         console.log("Sucesso!")
-      }).error(function(data){ //HERE
+      }).catch(function(response){ //HERE
         msgs.addError(response.data.errors)
         console.log(response.data.errors)
       })
@@ -70,7 +70,7 @@
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
         console.log("Sucesso!")
-      }).catch(function(data){
+      }).catch(function(response){
         msgs.addError(response.data.errors)
         console.log(response.data.error)
       })
